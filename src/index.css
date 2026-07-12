@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+/*
+=========================================
+DESIGN TOKENS
+Restaurant / POS system — "kitchen ticket" identity
+=========================================
+*/
+
+@theme {
+  /* Colors */
+  --color-ink: #14181b;
+  --color-ink-soft: #1f2528;
+  --color-paper: #faf8f5;
+  --color-paper-dim: #f1ede6; 
+  --color-charcoal: #2b2b2b;
+  --color-slate: #6b6f76;
+
+  --color-ember: #e4572e;
+  --color-ember-dark: #c8471f;
+  --color-ember-light: #fbe4da;
+
+  --color-basil: #2f6844;
+  --color-basil-light: #e2efe6;
+
+  --color-saffron: #f2a93b;
+  --color-saffron-light: #fdf0d9;
+
+  --color-claret: #9c2b3f;
+  --color-claret-light: #f6e2e5;
+
+  --color-line: #e6e1d7;
+
+  /* Fonts */
+  --font-display: "Fraunces", ui-serif, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Radius */
+  --radius-ticket: 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.font-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+=========================================
+SIGNATURE ELEMENT — perforated ticket edge
+=========================================
+*/
+
+.ticket-edge {
+  position: relative;
+}
+
+.ticket-edge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-image: radial-gradient(circle,
+      var(--color-line) 1.4px,
+      transparent 1.4px);
+  background-size: 10px 1px;
+  background-repeat: repeat-x;
+  background-position: top left;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-slate);
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d8d2c5;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
