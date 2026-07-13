@@ -6,7 +6,7 @@ export const connectKitchenSocket = (restaurantId) => {
 
     if (socket) return socket;
 
-    socket = io("http://localhost:5000", {
+    socket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:5000", {
         transports: ["websocket"],
         autoConnect: true
     });
