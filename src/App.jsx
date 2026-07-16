@@ -97,7 +97,7 @@ function App() {
           <Route element={<FeatureRoute feature="QR Menu" />}>
             <Route path="/qr" element={<QRManagement />} />
             <Route path="/qr/:tableId" element={<QRPreview />} />
-          </Route>
+          </Route> 
 
           <Route element={<FeatureRoute feature="Staff & Payroll" />}>
             <Route path="/staff" element={<Staff />} />
