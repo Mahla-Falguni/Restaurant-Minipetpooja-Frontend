@@ -8,7 +8,7 @@ import {
   LuChefHat,
   LuUserCheck,
   LuArrowRight,
-  LuCheckCircle2,
+  LuCircleCheck,
   LuPhone,
   LuUser,
   LuStore,
@@ -635,7 +635,7 @@ const Home = () => {
       {resSuccessModal && createdRes && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-xl border border-line shadow-2xl p-6 max-w-sm w-full text-center relative overflow-hidden ticket-edge">
-            <LuCheckCircle2 size={48} className="text-basil mx-auto mb-3" />
+            <LuCircleCheck size={48} className="text-basil mx-auto mb-3" />
             <h3 className="font-display text-xl font-bold text-ink">Reservation Requested</h3>
             <p className="text-xs text-slate mt-1.5">
               Your request has been submitted to the restaurant. We will reach out to confirm your booking.
