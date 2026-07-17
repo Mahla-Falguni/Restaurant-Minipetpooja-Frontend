@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 import { registerUser } from "../../redux/auth/authSlice";
 import AuthLayout from "../../layouts/AuthLayout";
-import { Input } from "../../components/Input";
+import { Input, Select } from "../../components/Input";
 import Button from "../../components/common/Button";
 
 const SectionLabel = ({ index, children }) => (
@@ -27,6 +27,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
+    role: "Admin",
     restaurant_name: "",
     owner_name: "",
     first_name: "",
@@ -48,8 +49,10 @@ const Register = () => {
   const validate = () => {
     const nextErrors = {};
 
-    if (!formData.restaurant_name.trim()) nextErrors.restaurant_name = "Required.";
-    if (!formData.owner_name.trim()) nextErrors.owner_name = "Required.";
+    if (formData.role === "Admin") {
+      if (!formData.restaurant_name.trim()) nextErrors.restaurant_name = "Required.";
+      if (!formData.owner_name.trim()) nextErrors.owner_name = "Required.";
+    }
     if (!formData.first_name.trim()) nextErrors.first_name = "Required.";
     if (!formData.last_name.trim()) nextErrors.last_name = "Required.";
     if (!formData.email.trim()) nextErrors.email = "Required.";
@@ -84,40 +87,59 @@ const Register = () => {
       subtitle="Takes about a minute — you can fine-tune everything later."
     >
       <form className="space-y-6" onSubmit={submitHandler} noValidate>
-        {/* Restaurant */}
+        {/* Role Selection */}
         <div>
-          <SectionLabel index={1}>Restaurant</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="relative sm:col-span-2">
+          <Select
+            label="Register As"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            error={errors.role}
+          >
+            <option value="Admin">Admin (Restaurant Owner)</option>
+            <option value="Manager">Manager</option>
+            <option value="Waiter">Waiter</option>
+            <option value="Cashier">Cashier</option>
+            <option value="Kitchen">Kitchen Staff</option>
+          </Select>
+        </div>
+
+        {/* Restaurant */}
+        {formData.role === "Admin" && (
+          <div>
+            <SectionLabel index={1}>Restaurant</SectionLabel>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="relative sm:col-span-2">
+                <Input
+                  label="Restaurant Name"
+                  name="restaurant_name"
+                  placeholder="The Spice House"
+                  value={formData.restaurant_name}
+                  onChange={handleChange}
+                  error={errors.restaurant_name}
+                  className="pl-10"
+                />
+                <LuBuilding2
+                  size={16}
+                  className="absolute left-3 top-[38px] text-slate/50 pointer-events-none"
+                />
+              </div>
+
               <Input
-                label="Restaurant Name"
-                name="restaurant_name"
-                placeholder="The Spice House"
-                value={formData.restaurant_name}
+                label="Owner Name"
+                name="owner_name"
+                placeholder="Full name"
+                value={formData.owner_name}
                 onChange={handleChange}
-                error={errors.restaurant_name}
-                className="pl-10"
-              />
-              <LuBuilding2
-                size={16}
-                className="absolute left-3 top-[38px] text-slate/50 pointer-events-none"
+                error={errors.owner_name}
               />
             </div>
-
-            <Input
-              label="Owner Name"
-              name="owner_name"
-              placeholder="Full name"
-              value={formData.owner_name}
-              onChange={handleChange}
-              error={errors.owner_name}
-            />
           </div>
-        </div>
+        )}
 
         {/* Your details */}
         <div>
-          <SectionLabel index={2}>Your Account</SectionLabel>
+          <SectionLabel index={formData.role === "Admin" ? 2 : 1}>Your Account</SectionLabel>
           <div className="grid grid-cols-2 gap-3">
             <Input
               label="First Name"
@@ -174,7 +196,7 @@ const Register = () => {
 
         {/* Security */}
         <div>
-          <SectionLabel index={3}>Security</SectionLabel>
+          <SectionLabel index={formData.role === "Admin" ? 3 : 2}>Security</SectionLabel>
           <div className="relative">
             <Input
               label="Password"

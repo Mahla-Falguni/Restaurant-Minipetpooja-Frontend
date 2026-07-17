@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 import { loginUser } from "../../redux/auth/authSlice";
 import AuthLayout from "../../layouts/AuthLayout";
-import { Input } from "../../components/Input";
+import { Input, Select } from "../../components/Input";
 import Button from "../../components/common/Button";
 
 // After login, redirect each role to the correct dashboard
@@ -24,7 +24,7 @@ const Login = () => {
   const { loading } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "", role: "Admin" });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -63,6 +63,22 @@ const Login = () => {
       subtitle="Log in to pick up right where you left off."
     >
       <form className="space-y-4" onSubmit={submitHandler} noValidate>
+
+        <div>
+          <Select
+            label="Login As"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            error={errors.role}
+          >
+            <option value="Admin">Admin (Restaurant Owner)</option>
+            <option value="Manager">Manager</option>
+            <option value="Waiter">Waiter</option>
+            <option value="Cashier">Cashier</option>
+            <option value="Kitchen">Kitchen Staff</option>
+          </Select>
+        </div>
 
         <div className="relative">
           <Input
