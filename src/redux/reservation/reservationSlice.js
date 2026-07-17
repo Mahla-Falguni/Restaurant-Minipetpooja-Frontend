@@ -16,6 +16,27 @@ export const getTodaysReservations = createAsyncThunk(
   }
 );
 
+// GET FILTERED RESERVATIONS LIST
+export const getReservationsList = createAsyncThunk(
+  "reservations/getList",
+  async (filters = {}, thunkAPI) => {
+    try {
+      const params = new URLSearchParams();
+      if (filters.date) params.append("date", filters.date);
+      if (filters.status) params.append("status", filters.status);
+      if (filters.search) params.append("search", filters.search);
+      
+      const response = await axiosInstance.get(`/reservations?${params.toString()}`);
+      // Backend returns pagination wrapper: { reservations, pagination }
+      return response.data.data.reservations;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to fetch reservations."
+      );
+    }
+  }
+);
+
 // CREATE RESERVATION
 export const createReservation = createAsyncThunk(
   "reservations/create",
@@ -78,6 +99,18 @@ const reservationSlice = createSlice({
         state.reservations = action.payload;
       })
       .addCase(getTodaysReservations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getReservationsList.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getReservationsList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reservations = action.payload;
+      })
+      .addCase(getReservationsList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

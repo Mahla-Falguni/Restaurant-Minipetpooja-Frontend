@@ -7,6 +7,7 @@ import Button from "../../components/common/Button";
 import Badge from "../../components/kitchen/Badge";
 import {
   getTodaysReservations,
+  getReservationsList,
   createReservation,
   confirmReservation,
   seatReservation,
@@ -67,9 +68,15 @@ const Reservations = () => {
   const [submitting, setSubmitting] = useState(false);
   const [busyId, setBusyId] = useState(null);
 
+  const [filters, setFilters] = useState({
+    status: "",
+    date: "",
+    search: "",
+  });
+
   useEffect(() => {
-    dispatch(getTodaysReservations());
-  }, [dispatch]);
+    dispatch(getReservationsList(filters));
+  }, [dispatch, filters]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -100,11 +107,61 @@ const Reservations = () => {
   };
 
   return (
-    <DashboardLayout title="Reservations" subtitle="Today's table bookings">
+    <DashboardLayout title="Reservations" subtitle="Manage customer table bookings and requests">
+
+      {/* Filter Bar */}
+      <div className="bg-white border border-line rounded-xl p-4 mb-6 flex flex-wrap items-center gap-4 text-sm shadow-sm">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-charcoal/70">Filter Status</label>
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+            className="border border-line rounded-lg px-3 py-1.5 bg-white text-ink text-xs focus:outline-none focus:ring-1 focus:ring-ember animate-none"
+          >
+            <option value="">All Statuses</option>
+            <option value="Requested">Requested (New Requests)</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Seated">Seated</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled / Declined</option>
+            <option value="No Show">No Show</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-charcoal/70">Select Date</label>
+          <input
+            type="date"
+            value={filters.date}
+            onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+            className="border border-line rounded-lg px-3 py-1.5 bg-white text-ink text-xs focus:outline-none focus:ring-1 focus:ring-ember h-[34px]"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1 flex-1 min-w-[200px]">
+          <label className="text-xs font-semibold text-charcoal/70">Search Customer</label>
+          <input
+            type="text"
+            placeholder="Search by name or phone..."
+            value={filters.search}
+            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+            className="border border-line rounded-lg px-3 py-1.5 bg-white text-ink text-xs focus:outline-none focus:ring-1 focus:ring-ember h-[34px]"
+          />
+        </div>
+
+        <div className="flex items-end self-end">
+          <button
+            onClick={() => setFilters({ status: "", date: "", search: "" })}
+            className="text-xs text-ember hover:underline font-semibold h-[34px]"
+          >
+            Reset Filters
+          </button>
+        </div>
+      </div>
 
       <div className="flex items-center justify-between mb-6">
         <p className="text-sm text-charcoal/60">
-          {reservations?.length || 0} reservation{reservations?.length === 1 ? "" : "s"} today
+          {reservations?.length || 0} reservation{reservations?.length === 1 ? "" : "s"} found
         </p>
         <Button icon={LuPlus} onClick={() => setShowForm((s) => !s)}>New Reservation</Button>
       </div>

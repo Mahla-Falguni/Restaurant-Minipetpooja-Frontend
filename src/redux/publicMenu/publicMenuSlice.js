@@ -31,12 +31,12 @@ export const getPublicMenu = createAsyncThunk(
   }
 );
 
-// POST /api/public/orders — same handler as the authenticated create-order route
+// POST /api/orders/create — same handler as the authenticated create-order route
 export const placeOrder = createAsyncThunk(
   "publicMenu/placeOrder",
   async (orderData, thunkAPI) => {
     try {
-      const res = await axiosInstance.post("/public/orders", orderData);
+      const res = await axiosInstance.post("/orders/create", orderData);
       return res.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
