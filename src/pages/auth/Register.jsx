@@ -74,7 +74,7 @@ const Register = () => {
 
     if (result.payload?.token) {
       toast.success("Account created — welcome aboard!");
-      navigate("/");
+      navigate("/dashboard");
     } else if (result.payload) {
       toast.error(result.payload);
     }

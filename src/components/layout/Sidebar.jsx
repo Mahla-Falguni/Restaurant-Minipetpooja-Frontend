@@ -34,7 +34,7 @@ const NAV_SECTIONS = [
   {
     label: "Overview",
     items: [
-      { to: "/", label: "Dashboard", icon: LayoutGrid, roles: ["Admin", "Manager"] }
+      { to: "/dashboard", label: "Dashboard", icon: LayoutGrid, roles: ["Admin", "Manager"] }
     ]
   },
   {

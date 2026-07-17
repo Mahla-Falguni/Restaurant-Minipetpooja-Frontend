@@ -11,8 +11,8 @@ import Button from "../../components/common/Button";
 
 // After login, redirect each role to the correct dashboard
 const roleRedirect = {
-  Admin: "/",
-  Manager: "/",
+  Admin: "/dashboard",
+  Manager: "/dashboard",
   Waiter: "/waiter",
   Kitchen: "/kitchen",
   Cashier: "/cashier",
@@ -23,8 +23,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
 
+  const queryParams = new URLSearchParams(window.location.search);
+  const initialRole = queryParams.get("role") || "Admin";
+
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "", role: "Admin" });
+  const [formData, setFormData] = useState({ email: "", password: "", role: initialRole });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
